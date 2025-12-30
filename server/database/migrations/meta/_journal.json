@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1767068658320,
+      "tag": "0000_broken_blue_shield",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1767068658321,
+      "tag": "0001_add_admin_user",
+      "breakpoints": true
+    }
+  ]
+}
