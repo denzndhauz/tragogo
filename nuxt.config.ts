@@ -5,6 +5,12 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/tailwindcss'],
 
+  tailwindcss: {
+    configPath: '~/tailwind.config.ts',
+  },
+
+  css: ['~/assets/css/main.css'],
+
   runtimeConfig: {
     // Private keys (server-only)
     databaseUrl: process.env.DATABASE_URL,
@@ -15,6 +21,7 @@ export default defineNuxtConfig({
     smtpUser: process.env.SMTP_USER,
     smtpPassword: process.env.SMTP_PASSWORD,
     smtpFrom: process.env.SMTP_FROM,
+    resendApiKey: process.env.RESEND_API_KEY,
 
     // Public keys (exposed to client)
     public: {

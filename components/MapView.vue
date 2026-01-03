@@ -163,9 +163,17 @@ const updateMarkers = () => {
     })
   }
 
-  // Add marked location markers with teal color
+  // Add marked location markers with custom icons based on type
+  const LOCATION_ICONS: Record<string, string> = {
+    home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z', // House
+    work: 'M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-8 0h-4V4h4v2z', // Briefcase
+    school: 'M12 3L1 9l11 6 9-4.91V17h2V9L12 3z', // Graduation cap
+    other: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' // Star
+  }
+
   if (props.markedLocations) {
     props.markedLocations.forEach(location => {
+      const type = (location.type || 'other').toLowerCase()
       const marker = new google.maps.Marker({
         position: {
           lat: parseFloat(location.latitude),
@@ -174,12 +182,13 @@ const updateMarkers = () => {
         map,
         title: location.name,
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12,
+          path: LOCATION_ICONS[type] || LOCATION_ICONS.other,
           fillColor: '#14b8a6', // primary-500
-          fillOpacity: 0.9,
+          fillOpacity: 1,
           strokeColor: '#ffffff',
-          strokeWeight: 3,
+          strokeWeight: 2,
+          scale: 1.2,
+          anchor: new google.maps.Point(12, 12),
         },
         zIndex: 50,
       })
@@ -257,7 +266,7 @@ const centerOnMember = (member: any) => {
       lng: parseFloat(member.latestLocation.longitude),
     }
     map.panTo(position)
-    map.setZoom(6)
+    map.setZoom(16)
   }
 }
 
@@ -268,7 +277,7 @@ const centerOnMarkedLocation = (location: any) => {
       lng: parseFloat(location.longitude),
     }
     map.panTo(position)
-    map.setZoom(6)
+    map.setZoom(16)
   }
 }
 

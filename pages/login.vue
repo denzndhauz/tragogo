@@ -40,7 +40,7 @@
         <!-- Login Form -->
         <form v-if="!showRegister" @submit.prevent="handleLogin" class="space-y-4">
           <div>
-            <label class="block text-sm font-semibold text-neutral-900 mb-2">Email</label>
+            <label class="label-field">Email</label>
             <input 
               v-model="loginForm.email" 
               type="email" 
@@ -52,7 +52,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-neutral-900 mb-2">Password</label>
+            <label class="label-field">Password</label>
             <input 
               v-model="loginForm.password" 
               type="password" 
@@ -71,7 +71,7 @@
         <!-- Register Form -->
         <form v-else @submit.prevent="handleRegister" class="space-y-4">
           <div>
-            <label class="block text-sm font-semibold text-neutral-900 mb-2">Full Name</label>
+            <label class="label-field">Full Name</label>
             <input 
               v-model="registerForm.name" 
               type="text" 
@@ -83,7 +83,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-neutral-900 mb-2">Email</label>
+            <label class="label-field">Email</label>
             <input 
               v-model="registerForm.email" 
               type="email" 
@@ -95,7 +95,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-neutral-900 mb-2">Password</label>
+            <label class="label-field">Password</label>
             <input 
               v-model="registerForm.password" 
               type="password" 

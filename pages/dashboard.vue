@@ -142,7 +142,7 @@
 
             <!-- Other Family Members -->
             <button 
-              v-for="member in members" 
+              v-for="member in otherMembers" 
               :key="member.id"
               @click="centerOnMember(member)"
               :disabled="!member.latestLocation"
@@ -213,10 +213,6 @@
                 <div class="font-medium text-neutral-900 truncate">{{ location.name }}</div>
                 <div class="text-xs text-neutral-500 capitalize">{{ location.type }} • {{ location.radius }}m</div>
               </div>
-
-              <svg class="w-5 h-5 text-neutral-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
             </button>
           </div>
         </div>
@@ -258,11 +254,23 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input 
+            id="location-search-input"
             v-model="locationSearchQuery"
             type="text"
-            placeholder="Search locations by name..."
+            placeholder="Search for a location..."
             class="w-full pl-10 pr-4 py-3 bg-neutral-100 border border-neutral-200 rounded-xl focus:outline-none focus:border-ocean-500"
           />
+        </div>
+
+        <!-- Selected Address Display -->
+        <div v-if="selectedLocation" class="mt-3 p-3 bg-ocean-50 rounded-xl border border-ocean-100 flex items-start gap-2">
+          <svg class="w-5 h-5 text-ocean-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          </svg>
+          <div>
+            <p class="text-xs font-semibold text-ocean-900">Selected Location</p>
+            <p class="text-xs text-ocean-700 leading-relaxed">{{ selectedLocation.address }}</p>
+          </div>
         </div>
       </div>
 
@@ -303,11 +311,11 @@
         <div class="px-6 py-6 border-b border-neutral-200">
           <div v-if="currentLocation" class="p-4 bg-ocean-50 border border-ocean-200 rounded-2xl">
             <p class="text-sm font-semibold text-ocean-900 mb-2">Current Location</p>
-            <p class="text-xs text-ocean-700 space-y-1">
+            <div class="text-xs text-ocean-700 space-y-1">
               <div>Latitude: {{ currentLocation.latitude.toFixed(6) }}</div>
               <div>Longitude: {{ currentLocation.longitude.toFixed(6) }}</div>
               <div>Accuracy: {{ Math.round(currentLocation.accuracy || 0) }}m</div>
-            </p>
+            </div>
           </div>
           <div v-else class="p-4 bg-warning-50 border border-warning-200 rounded-2xl">
             <p class="text-sm font-semibold text-warning-900">Location Not Available</p>
@@ -351,8 +359,8 @@
         </button>
         <button 
           @click="handleAddLocation"
-          :disabled="!locationName || !currentLocation || locationLoading"
-          class="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="!locationName || !selectedLocation || locationLoading"
+          class="flex-1 btn-primary disabled:opacity-40 disabled:bg-neutral-200 disabled:text-neutral-500 disabled:shadow-none"
         >
           {{ locationLoading ? 'Saving...' : 'Mark Location' }}
         </button>
@@ -377,6 +385,8 @@ const mapRef = ref<InstanceType<typeof MapView> | null>(null)
 const locationName = ref('')
 const locationType = ref<'home' | 'work' | 'school' | 'other'>('other')
 const locationSearchQuery = ref('')
+const selectedLocation = ref<{ address: string, latitude: number, longitude: number } | null>(null)
+let autocomplete: google.maps.places.Autocomplete | null = null
 
 // Location suggestions for search
 const locationSuggestions = [
@@ -397,6 +407,11 @@ const filteredLocationSuggestions = computed(() => {
   return locationSuggestions.filter(loc =>
     loc.toLowerCase().includes(locationSearchQuery.value.toLowerCase())
   )
+})
+
+const otherMembers = computed(() => {
+  if (!user.value) return members.value
+  return members.value.filter(m => m.userId !== user.value.id)
 })
 
 // Redirect if not authenticated
@@ -429,7 +444,7 @@ const fetchLocations = async () => {
 }
 
 const handleAddLocation = async () => {
-  if (!locationName.value || !currentLocation.value) {
+  if (!locationName.value || !selectedLocation.value) {
     return
   }
 
@@ -437,8 +452,8 @@ const handleAddLocation = async () => {
     await createLocation({
       name: locationName.value,
       type: locationType.value,
-      latitude: currentLocation.value.latitude,
-      longitude: currentLocation.value.longitude,
+      latitude: selectedLocation.value.latitude,
+      longitude: selectedLocation.value.longitude,
       radius: 100,
       notifyOnArrival: true,
     })
@@ -486,6 +501,41 @@ const centerOnMember = (member: any) => {
     mapRef.value.centerOnMember(member)
   }
 }
+
+// Initialize Google Places Autocomplete when modal opens
+watch(showLocationModal, (isVisible) => {
+  if (isVisible) {
+    nextTick(() => {
+      const input = document.getElementById('location-search-input') as HTMLInputElement
+      if (input && !autocomplete) {
+        autocomplete = new google.maps.places.Autocomplete(input, {
+          fields: ['address_components', 'geometry', 'name', 'formatted_address'],
+          types: ['establishment', 'geocode']
+        })
+
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete?.getPlace()
+          if (place?.geometry?.location) {
+            selectedLocation.value = {
+              address: place.formatted_address || place.name || '',
+              latitude: place.geometry.location.lat(),
+              longitude: place.geometry.location.lng()
+            }
+            // Optional: auto-fill name if empty
+            if (!locationName.value) {
+              locationName.value = place.name || ''
+            }
+          }
+        })
+      }
+    })
+  } else {
+    // Reset selection when modal closes
+    selectedLocation.value = null
+    locationSearchQuery.value = ''
+    autocomplete = null
+  }
+})
 </script>
 
 <style scoped>

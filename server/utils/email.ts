@@ -1,44 +1,48 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
 /**
- * Send an email using configured SMTP settings
+ * Send an email using Resend API
  */
 export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
-    const config = useRuntimeConfig()
+  const config = useRuntimeConfig()
 
-    try {
-        const transporter = nodemailer.createTransport({
-            host: config.smtpHost,
-            port: parseInt(config.smtpPort),
-            secure: false, // true for 465, false for other ports
-            auth: {
-                user: config.smtpUser,
-                pass: config.smtpPassword,
-            },
-        })
+  if (!config.resendApiKey) {
+    console.warn('RESEND_API_KEY is not set. Email not sent.')
+    return
+  }
 
-        await transporter.sendMail({
-            from: config.smtpFrom,
-            to,
-            subject,
-            html,
-        })
-    } catch (error) {
-        console.error('Email sending error:', error)
-        throw new Error('Failed to send email')
+  const resend = new Resend(config.resendApiKey)
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: config.smtpFrom || 'Tragogo <onboarding@resend.dev>',
+      to: [to],
+      subject,
+      html,
+    })
+
+    if (error) {
+      console.error('Resend error:', error)
+      throw new Error('Failed to send email via Resend')
     }
+
+    console.log('Email sent successfully:', data?.id)
+  } catch (error) {
+    console.error('Email sending error:', error)
+    throw new Error('Failed to send email')
+  }
 }
 
 /**
  * Generate invitation email HTML
  */
 export function generateInvitationEmail(
-    inviterName: string,
-    groupName: string,
-    code: string,
-    inviteUrl: string
+  inviterName: string,
+  groupName: string,
+  code: string,
+  inviteUrl: string
 ): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
