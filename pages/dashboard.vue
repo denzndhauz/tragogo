@@ -371,6 +371,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import MapView from '~/components/MapView.vue'
 const { user, logout, isAuthenticated, getAuthHeaders } = useAuth()
 const { startTracking, stopTracking, isTracking, location: currentLocation } = useLocationTracking()
 const { fetchLocations: fetchMarkedLocations, createLocation, markCurrentLocation, loading: locationLoading, error: locationError } = useMarkedLocations()
@@ -386,7 +387,7 @@ const locationName = ref('')
 const locationType = ref<'home' | 'work' | 'school' | 'other'>('other')
 const locationSearchQuery = ref('')
 const selectedLocation = ref<{ address: string, latitude: number, longitude: number } | null>(null)
-let autocomplete: google.maps.places.Autocomplete | null = null
+let autocomplete: any = null
 
 // Location suggestions for search
 const locationSuggestions = [
@@ -423,7 +424,7 @@ if (!isAuthenticated.value) {
 const fetchMembers = async () => {
   try {
     const response = await $fetch('/api/family/members', {
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders() as any,
     })
     members.value = response.members || []
   } catch (error) {
@@ -435,7 +436,7 @@ const fetchMembers = async () => {
 const fetchLocations = async () => {
   try {
     const response = await $fetch('/api/locations/marked/list', {
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders() as any,
     })
     markedLocations.value = response.locations || []
   } catch (error) {
@@ -503,7 +504,7 @@ const centerOnMember = (member: any) => {
 }
 
 // Initialize Google Places Autocomplete when modal opens
-watch(showLocationModal, (isVisible) => {
+watch(showLocationModal, (isVisible: boolean) => {
   if (isVisible) {
     nextTick(() => {
       const input = document.getElementById('location-search-input') as HTMLInputElement
