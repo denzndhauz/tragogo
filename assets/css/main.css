@@ -14,9 +14,13 @@
   }
 
   body {
-    @apply bg-neutral-50 text-neutral-900 font-sans;
+    @apply bg-neutral-50 text-neutral-900 font-sans transition-colors duration-300;
     min-height: 100vh;
     min-height: -webkit-fill-available;
+  }
+
+  .dark body {
+    @apply bg-neutral-950 text-neutral-50;
   }
 
   /* Mobile viewport fix */
@@ -30,7 +34,7 @@
 
   /* Grab-style card */
   .grab-card {
-    @apply bg-white rounded-2xl shadow-card;
+    @apply bg-white dark:bg-neutral-900 rounded-2xl shadow-card dark:shadow-none border border-transparent dark:border-neutral-800 transition-colors duration-300;
   }
 
   /* Primary button - Ocean blue */
@@ -43,21 +47,21 @@
   }
 
   .btn-ghost {
-    @apply w-full py-4 bg-neutral-100 text-neutral-700 font-medium rounded-xl active:bg-neutral-200 transition-colors duration-150;
+    @apply w-full py-4 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium rounded-xl active:bg-neutral-200 dark:active:bg-neutral-700 transition-all duration-150;
   }
 
   /* Input fields - Grab style */
   .input-field {
-    @apply w-full px-4 py-4 bg-neutral-50 border-2 border-neutral-100 rounded-2xl focus:outline-none focus:border-ocean-500 focus:bg-white transition-all duration-200 text-base placeholder:text-neutral-400 font-medium;
+    @apply w-full px-4 py-4 bg-neutral-50 dark:bg-neutral-900 border-2 border-neutral-100 dark:border-neutral-800 rounded-2xl focus:outline-none focus:border-ocean-500 dark:focus:border-ocean-400 focus:bg-white dark:focus:bg-neutral-800 transition-all duration-200 text-base placeholder:text-neutral-400 font-medium dark:text-neutral-100;
   }
 
   .label-field {
-    @apply block text-sm font-bold text-neutral-700 mb-2 ml-1;
+    @apply block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2 ml-1;
   }
 
   /* Bottom sheet style container */
   .bottom-sheet {
-    @apply fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-xl p-6 pb-safe-bottom;
+    @apply fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 rounded-t-3xl shadow-xl dark:shadow-none border-t dark:border-neutral-800 p-6 pb-safe-bottom transition-colors duration-300;
   }
 
   /* Map container - Full screen mobile */
@@ -81,12 +85,12 @@
   }
 
   .status-offline {
-    @apply bg-neutral-100 text-neutral-600;
+    @apply bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400;
   }
 
   /* Avatar */
   .avatar {
-    @apply w-10 h-10 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 font-semibold;
+    @apply w-10 h-10 rounded-full bg-ocean-100 dark:bg-ocean-950 flex items-center justify-center text-ocean-700 dark:text-ocean-300 font-semibold;
   }
 
   .avatar-lg {
@@ -95,12 +99,12 @@
 
   /* List item - Grab style */
   .list-item {
-    @apply flex items-center gap-3 p-4 active:bg-neutral-50 transition-colors;
+    @apply flex items-center gap-3 p-4 active:bg-neutral-50 dark:active:bg-neutral-800 transition-colors duration-200;
   }
 
   /* Divider */
   .divider {
-    @apply h-px bg-neutral-200 my-2;
+    @apply h-px bg-neutral-200 dark:bg-neutral-800 my-2 shadow-none;
   }
 
   /* Safe area padding */

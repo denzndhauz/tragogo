@@ -1,23 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-ocean-50 to-neutral-50 flex flex-col justify-center items-center px-6 py-8">
+  <div class="min-h-screen bg-gradient-to-b from-ocean-50 to-neutral-50 dark:from-neutral-900 dark:to-neutral-950 flex flex-col justify-center items-center px-6 py-8 transition-colors duration-300">
     <!-- Container -->
     <div class="w-full max-w-md">
       <!-- Header -->
-      <div class="text-center mb-8 flex flex-col items-center">
+      <div class="text-center mb-8 flex flex-col items-center relative">
+        <div class="absolute -top-4 -right-4">
+          <ThemeToggle />
+        </div>
         <img src="/assets/img/image.png" alt="Tragogo Logo" class="w-20 h-20 object-contain rounded-2xl mb-4 shadow-sm" />
-        <h1 class="text-4xl font-bold text-ocean-900 mb-1">Tragogo</h1>
-        <p class="text-ocean-600 font-medium tracking-wide">Keep your family safe</p>
+        <h1 class="text-4xl font-bold text-ocean-900 dark:text-neutral-100 mb-1">Tragogo</h1>
+        <p class="text-ocean-600 dark:text-ocean-400 font-medium tracking-wide">Keep your family safe</p>
       </div>
 
       <!-- Auth Card -->
-      <div class="bg-white rounded-3xl shadow-lg p-8">
+      <div class="bg-white dark:bg-neutral-900 rounded-3xl shadow-lg dark:shadow-none border border-transparent dark:border-neutral-800 p-8 transition-colors duration-300">
         <!-- Auth Toggle -->
-        <div class="flex bg-neutral-100 rounded-2xl p-1.5 mb-8 shadow-sm">
+        <div class="flex bg-neutral-100 dark:bg-neutral-800 rounded-2xl p-1.5 mb-8 shadow-sm">
           <button 
             @click="showRegister = false"
             :class="[
               'flex-1 py-3 rounded-xl font-semibold transition-all no-select text-sm',
-              !showRegister ? 'bg-white text-ocean-600 shadow-card' : 'text-neutral-600'
+              !showRegister ? 'bg-white dark:bg-neutral-700 text-ocean-600 dark:text-neutral-100 shadow-card' : 'text-neutral-600 dark:text-neutral-400'
             ]"
           >
             Sign In
@@ -26,7 +29,7 @@
             @click="showRegister = true"
             :class="[
               'flex-1 py-3 rounded-xl font-semibold transition-all no-select text-sm',
-              showRegister ? 'bg-white text-ocean-600 shadow-card' : 'text-neutral-600'
+              showRegister ? 'bg-white dark:bg-neutral-700 text-ocean-600 dark:text-neutral-100 shadow-card' : 'text-neutral-600 dark:text-neutral-400'
             ]"
           >
             Sign Up
@@ -116,7 +119,7 @@
 
       <!-- Back link -->
       <div class="text-center mt-6">
-        <NuxtLink to="/" class="text-sm text-ocean-600 font-medium hover:text-ocean-700">
+        <NuxtLink to="/" class="text-sm text-ocean-600 dark:text-ocean-400 font-medium hover:text-ocean-700 dark:hover:text-ocean-300">
           ← Back to Home
         </NuxtLink>
       </div>

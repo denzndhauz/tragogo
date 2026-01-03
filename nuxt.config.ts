@@ -4,7 +4,11 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+
+  colorMode: {
+    classSuffix: ''
+  },
 
   tailwindcss: {
     configPath: '~/tailwind.config.ts',
