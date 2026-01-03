@@ -67,7 +67,8 @@
 
   /* Floating action button */
   .fab {
-    @apply fixed bottom-6 right-6 w-14 h-14 bg-ocean-500 text-white rounded-full shadow-float flex items-center justify-center active:scale-95 transition-transform z-50;
+    @apply fixed right-6 w-14 h-14 bg-ocean-500 text-white rounded-full shadow-float flex items-center justify-center active:scale-95 transition-transform z-50;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   /* Status badge */
@@ -104,11 +105,20 @@
 
   /* Safe area padding */
   .safe-top {
-    padding-top: env(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
   .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Add utility-like safe area classes that can be combined */
+  .pt-safe {
+    padding-top: calc(0.75rem + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  .pb-safe {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 

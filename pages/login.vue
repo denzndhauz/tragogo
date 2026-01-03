@@ -3,9 +3,10 @@
     <!-- Container -->
     <div class="w-full max-w-md">
       <!-- Header -->
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-ocean-900 mb-2">Tragogo</h1>
-        <p class="text-ocean-600 font-medium">Keep your family safe</p>
+      <div class="text-center mb-8 flex flex-col items-center">
+        <img src="/assets/img/image.png" alt="Tragogo Logo" class="w-20 h-20 object-contain rounded-2xl mb-4 shadow-sm" />
+        <h1 class="text-4xl font-bold text-ocean-900 mb-1">Tragogo</h1>
+        <p class="text-ocean-600 font-medium tracking-wide">Keep your family safe</p>
       </div>
 
       <!-- Auth Card -->

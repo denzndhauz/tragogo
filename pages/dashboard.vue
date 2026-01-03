@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col bg-neutral-50">
     <!-- Top Bar -->
-    <div class="safe-top bg-white border-b border-neutral-200 px-4 py-3 flex items-center justify-between z-10">
+    <div class="pt-safe pb-3 px-4 bg-white border-b border-neutral-200 flex items-center justify-between z-10">
       <div class="flex items-center gap-3">
         <div 
           v-if="user?.profileIcon" 
@@ -62,7 +62,7 @@
     </div>
 
     <!-- Bottom Sheet - 40% height -->
-    <div class="h-[40%] bg-white border-t border-neutral-200 safe-bottom flex flex-col"
+    <div class="h-[40%] bg-white border-t border-neutral-200 safe-bottom flex flex-col">
       <!-- Tab Bar -->
       <div class="flex border-b border-neutral-200 flex-shrink-0">
         <button 
@@ -372,6 +372,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import MapView from '~/components/MapView.vue'
+declare const google: any
 const { user, logout, isAuthenticated, getAuthHeaders } = useAuth()
 const { startTracking, stopTracking, isTracking, location: currentLocation } = useLocationTracking()
 const { fetchLocations: fetchMarkedLocations, createLocation, markCurrentLocation, loading: locationLoading, error: locationError } = useMarkedLocations()

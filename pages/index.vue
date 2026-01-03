@@ -3,9 +3,12 @@
     <!-- Header with logo -->
     <div class="safe-top bg-gradient-to-b from-ocean-50 to-transparent px-6 pt-8 pb-6 flex-shrink-0">
       <div class="flex items-center justify-between gap-4">
-        <div class="space-y-2">
-          <h1 class="text-4xl font-bold text-ocean-900">Tragogo</h1>
-          <p class="text-ocean-600 font-medium">Keep your family safe</p>
+        <div class="flex items-center gap-3">
+          <img src="/assets/img/image.png" alt="Tragogo Logo" class="w-12 h-12 object-contain rounded-xl" />
+          <div class="space-y-0.5">
+            <h1 class="text-3xl font-bold text-ocean-900 tracking-tight">Tragogo</h1>
+            <p class="text-ocean-600 font-medium text-sm">Keep your family safe</p>
+          </div>
         </div>
         <NuxtLink to="/login" class="flex-shrink-0">
           <button class="px-8 py-3 bg-ocean-500 text-neutral-900 font-semibold rounded-xl shadow-md hover:bg-ocean-600 active:scale-[0.98] transition-all duration-150 whitespace-nowrap">
